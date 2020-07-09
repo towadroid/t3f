@@ -84,7 +84,7 @@ def tensor_ones(shape, dtype=tf.float32, name='t3f_tensor_ones'):
   shape = np.array(shape)
   _validate_input_parameters(is_tensor=True, shape=shape)
   num_dims = shape.size
-  tt_rank = np.ones(num_dims + 1)
+  tt_rank = np.ones(num_dims + 1, dtype=int)
 
   with tf.name_scope(name):
     tt_cores = num_dims * [None]
@@ -110,7 +110,7 @@ def tensor_zeros(shape, dtype=tf.float32, name='t3f_tensor_zeros'):
   shape = np.array(shape)
   _validate_input_parameters(is_tensor=True, shape=shape)
   num_dims = shape.size
-  tt_rank = np.ones(num_dims + 1)
+  tt_rank = np.ones(num_dims + 1, dtype=int)
   tt_cores = num_dims * [None]
   with tf.name_scope(name):
     for i in range(num_dims):
@@ -182,7 +182,7 @@ def matrix_ones(shape, dtype=tf.float32, name='t3f_matrix_ones'):
   _validate_input_parameters(is_tensor=False, shape=shape)
 
   num_dims = shape[0].size
-  tt_rank = np.ones(shape[0].size + 1)
+  tt_rank = np.ones(shape[0].size + 1, dtype=int)
 
   with tf.name_scope(name):
     tt_cores = [None] * num_dims
@@ -224,7 +224,7 @@ def matrix_zeros(shape, dtype=tf.float32, name='t3f_matrix_zeros'):
 
   _validate_input_parameters(is_tensor=False, shape=shape)
   num_dims = shape[0].size
-  tt_rank = np.ones(shape[0].size + 1)
+  tt_rank = np.ones(shape[0].size + 1, dtype=int)
 
   with tf.name_scope(name):
     tt_cores = [None] * num_dims
