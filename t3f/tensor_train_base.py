@@ -177,3 +177,11 @@ class TensorTrainBase(object):
 
   # To support 'TT * 4' as well as '4 * TT'.
   __rmul__ = __mul__
+
+  def __matmul__(self, other):
+    from t3f import ops
+    return ops.matmul(self, other)
+
+  def transpose(self):
+    from t3f import ops
+    return ops.transpose(self)

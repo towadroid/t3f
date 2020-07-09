@@ -1,4 +1,5 @@
 import tensorflow as tf
+import numpy as np
 
 from t3f.tensor_train_base import TensorTrainBase
 from t3f import shapes
@@ -140,6 +141,37 @@ class TensorTrain(TensorTrainBase):
       remainder = None
     # TODO: infer the output ranks and shape.
     return TensorTrain(new_tt_cores)
+
+
+  def get_partial(self, slice_first, slice_second):
+    """Get parts of a TT-Matrix based on multiindices
+
+    If self is a matrix of dimension (N1 x ... x Nd) x (M1 x ... x Md)
+
+    Parameters
+    ----------
+    slice_first: List[slices] of length d
+    slice_second: List[slices] of length d
+
+    Returns
+    -------
+    TensorTrain
+    """
+    if not self.is_tt_matrix():
+      raise NotImplementedError
+    else:
+      if slice_first is None:
+        slice_first = np.repeat([slice(None)], self.ndims())
+      if slice_second is None:
+        slice_second = np.repeat([slice(None)], self.ndims())
+
+      new_tt_cores = []
+      for i in range(self.ndims()):
+        curr_core = self.tt_cores[i]
+        sliced_core = curr_core[:, slice_first[i], slice_second[i], :]
+        new_tt_cores.append(sliced_core)
+
+      return TensorTrain(new_tt_cores)
 
 
 def _are_tt_cores_valid(tt_cores, shape, tt_ranks):
